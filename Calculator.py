@@ -4,7 +4,7 @@ import requests
 import json
 from datetime import datetime
 
-# Color Scheme for Dark Theme
+# Color Scheme 
 DARK_BG = "#1e1e1e"
 DARK_FG = "#ffffff"
 DARK_SECONDARY = "#2d2d2d"
@@ -18,7 +18,7 @@ SUCCESS_GREEN = "#4CAF50"
 ERROR_RED = "#f44336"
 INFO_BLUE = "#2196F3"
 
-# Calculator Functions
+# Calculator
 def update_display(value):
     """Update the display with button values"""
     current_text = display_var.get()
@@ -71,21 +71,19 @@ def show_unit_converter():
 def update_exchange_rates():
     """Fetch and display current exchange rates"""
     try:
-        # Using a free exchange rate API
+        
         response = requests.get("https://api.exchangerate-api.com/v4/latest/USD")
         data = response.json()
         
         rates = data['rates']
         last_updated = datetime.fromtimestamp(data['time_last_updated']).strftime('%Y-%m-%d %H:%M:%S')
         
-        # Clear previous rates
         for widget in rates_frame.winfo_children():
             widget.destroy()
         
-        # Display last updated time
+        
         time_label.config(text=f"Last Updated: {last_updated}")
         
-        # Display popular currencies
         popular_currencies = {
             'EUR': 'Euro',
             'GBP': 'British Pound',
@@ -96,8 +94,7 @@ def update_exchange_rates():
             'CNY': 'Chinese Yuan',
             'INR': 'Indian Rupee'
         }
-        
-        # Header
+         
         header_frame = tk.Frame(rates_frame, bg=DARK_ACCENT)
         header_frame.pack(fill=tk.X, padx=5, pady=2)
         
@@ -105,8 +102,7 @@ def update_exchange_rates():
                 bg=DARK_ACCENT, fg=DARK_FG, width=15, anchor="w").pack(side=tk.LEFT)
         tk.Label(header_frame, text="Rate (1 USD = )", font=("Arial", 12, "bold"), 
                 bg=DARK_ACCENT, fg=DARK_FG, width=15, anchor="w").pack(side=tk.LEFT)
-        
-        # Display rates
+          
         for currency_code, currency_name in popular_currencies.items():
             if currency_code in rates:
                 rate_frame = tk.Frame(rates_frame, bg=DARK_SECONDARY)
@@ -135,8 +131,7 @@ def convert_currency():
         if not from_currency or not to_currency:
             status_label.config(text="Please select both currencies", fg=ERROR_RED)
             return
-        
-        # Using the same API for conversion
+            
         response = requests.get(f"https://api.exchangerate-api.com/v4/latest/{from_currency}")
         data = response.json()
         
@@ -156,17 +151,14 @@ def convert_currency():
 # Unit Converter Functions
 def show_conversion_category(category):
     """Show the appropriate conversion interface based on category"""
-    # Hide all conversion frames
+    
     for frame in conversion_frames.values():
         frame.pack_forget()
-    
-    # Show selected category frame
+     
     conversion_frames[category].pack(fill=tk.BOTH, expand=True)
-    
-    # Update category label
+        
     category_label.config(text=f"{category.capitalize()} Converter")
     
-    # Clear previous result
     result_var.set("")
 
 def convert_units():
@@ -285,7 +277,7 @@ def convert_units():
     except ValueError:
         result_var.set("Please enter a valid number")
 
-# Configure 
+
 def configure_dark_theme():
     """Configure dark theme for all widgets"""
     # Configure style for OptionMenu
@@ -301,7 +293,6 @@ root.geometry("500x600")
 root.resizable(0, 0)  # Prevent resizing
 root.configure(bg=DARK_BG)
 
-# Configure 
 configure_dark_theme()
 
 # Menu Bar 
@@ -493,11 +484,11 @@ time_label = tk.Label(
 )
 time_label.pack()
 
-# Rates display frame with scrollbar
+
+
 rates_container = tk.Frame(exchange_rates_frame, bg=DARK_BG)
 rates_container.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-# Canvas and scrollbar for rates
 canvas = tk.Canvas(rates_container, height=200, bg=DARK_BG, highlightthickness=0)
 scrollbar = tk.Scrollbar(rates_container, orient="vertical", command=canvas.yview, bg=DARK_ACCENT)
 scrollable_frame = tk.Frame(canvas, bg=DARK_BG)
@@ -515,7 +506,7 @@ rates_frame = scrollable_frame
 canvas.pack(side="left", fill="both", expand=True)
 scrollbar.pack(side="right", fill="y")
 
-# Currency conversion section
+# Currency conversion 
 conversion_frame = tk.LabelFrame(
     exchange_rates_frame,
     text="Currency Converter",
@@ -728,14 +719,14 @@ for i, category in enumerate(categories):
     )
     btn.grid(row=i//4, column=i%4, padx=2, pady=2, sticky="ew")
 
-# Configure grid for quick categories
+
 for i in range(4):
     quick_categories_frame.grid_columnconfigure(i, weight=1)
 
 # Conversion frames dictionary (for future expansion)
 conversion_frames = {}
 
-# Add keyboard bindings for calculator
+# Add keyboard for calculator
 def key_press(event):
     key = event.char
     if key in '0123456789':
